@@ -172,7 +172,7 @@ const Chatbot = () => {
       <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white border-0 transition-all duration-300 hover:scale-110 ${!isOpen && hasNewMessage ? 'chatbot-pulse' : ''}`}
+          className="relative w-14 h-14 rounded-full shadow-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white border-0 transition-all duration-300 hover:scale-110"
           size="sm"
         >
           {isOpen ? (
@@ -183,7 +183,7 @@ const Chatbot = () => {
           
           {/* Notification Badge */}
           {hasNewMessage && !isOpen && (
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center chatbot-notification-bounce">
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
               <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
           )}
@@ -200,7 +200,7 @@ const Chatbot = () => {
           />
           
           {/* Chat Window */}
-          <div className="fixed bottom-24 right-4 left-4 md:left-auto md:right-6 md:w-80 lg:w-96 h-[389px] max-w-md md:max-w-none bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
+          <div className="fixed bottom-24 right-4 left-4 md:left-auto md:right-6 md:w-80 lg:w-96 max-w-md md:max-w-none bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-300" style={{ height: '399px', maxHeight: 'calc(100vh - 200px)' }}>
             
             {/* Header */}
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-4 flex items-center justify-between">

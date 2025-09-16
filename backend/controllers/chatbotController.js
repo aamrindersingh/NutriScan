@@ -49,6 +49,21 @@ AI Assistant: `;
         hasGoals: !!userData.dailyGoals
       });
 
+      // Additional debugging for profile/goals issues
+      console.log('🔍 User data debug:', {
+        userError: userData.error,
+        userName: userData.user?.name,
+        profileExists: !!userData.profile,
+        profileData: userData.profile ? {
+          age: userData.profile.age,
+          goalType: userData.profile.goalType
+        } : 'NO PROFILE',
+        dailyGoalsExists: !!userData.dailyGoals,
+        dailyGoalsData: userData.dailyGoals ? {
+          calories: userData.dailyGoals.calories
+        } : 'NO DAILY GOALS'
+      });
+
       // Debug: Log user data structure
       if (userData.error) {
         console.log('❌ User data fetch error:', userData.error);
@@ -139,21 +154,23 @@ AI Assistant: `;
  */
 function getSystemPrompt(context) {
   const prompts = {
-    nutrition_assistant: `You are a concise nutrition assistant for NutriScan. Provide brief, actionable nutrition advice.
+    nutrition_assistant: `You are a ultra-concise nutrition assistant for NutriScan. 
 
-Key guidelines:
-- Keep responses under 150 words
-- Be direct and specific
-- Focus on practical tips
-- Use bullet points when helpful
-- Avoid lengthy explanations
-- Stay nutrition-focused
+Rules:
+- Max 80 words per response
+- Write in short, clear sentences
+- Be direct, no fluff
+- Give 1-3 actionable tips only
+- Skip introductions/conclusions
+- NO bullet points or lists
 
-Give short, helpful answers that users can quickly read and act on.`,
+IMPORTANT: If user data shows profile is incomplete or goals are not set, tell them to complete their profile setup first. Don't mention specific calorie numbers if their profile is incomplete. Be consistent with the data you have.
 
-    general: `You are a concise AI assistant for NutriScan. Provide brief, helpful nutrition advice in under 150 words. Be direct and actionable.`,
+Answer briefly and practically in paragraph form.`,
 
-    food_analysis: `You are a food analysis expert. Provide concise, practical advice about food nutrition in under 150 words. Be direct and specific.`
+    general: `You are an ultra-concise AI assistant for NutriScan. Max 80 words. Write in short sentences, no bullets or lists. Be direct and give actionable tips in paragraph form.`,
+
+    food_analysis: `You are a food analysis expert. Max 80 words. Write in short sentences, no bullets. Be direct and specific about nutrition facts in paragraph form.`
   };
 
   return prompts[context] || prompts.general;
@@ -236,9 +253,9 @@ function cleanAndFormatResponse(response) {
     return "I'm here to help with your nutrition questions! What would you like to know?";
   }
 
-  // Limit length to keep responses concise
-  if (cleaned.length > 600) {
-    cleaned = cleaned.substring(0, 580) + "...";
+  // Limit length to keep responses very concise
+  if (cleaned.length > 400) {
+    cleaned = cleaned.substring(0, 380) + "...";
   }
 
   return cleaned;
@@ -265,23 +282,43 @@ function getFallbackResponse(context) {
 async function fetchUserPersonalizationData(firebaseUid) {
   try {
     // Find the user
+    console.log('🔍 Fetching user data for:', firebaseUid);
+    
+    // First, find the user
     const user = await User.findOne({ 
-      where: { firebase_uid: firebaseUid },
-      include: [
-        {
-          model: Profile,
-          as: 'profile'
-        },
-        {
-          model: DailyGoal,
-          as: 'dailyGoals'
-        }
-      ]
+      where: { firebase_uid: firebaseUid }
     });
 
     if (!user) {
+      console.log('❌ User not found for firebase_uid:', firebaseUid);
       return { error: 'User not found' };
     }
+
+    console.log('👤 User found:', user.id, user.name);
+
+    // Then fetch profile and daily goals separately (like other controllers do)
+    const profile = await Profile.findOne({ 
+      where: { userId: user.id } 
+    });
+
+    const dailyGoal = await DailyGoal.findOne({ 
+      where: { userId: user.id } 
+    });
+
+    console.log('✅ Data fetched:', {
+      userId: user.id,
+      userName: user.name,
+      hasProfile: !!profile,
+      hasDailyGoals: !!dailyGoal,
+      profileData: profile ? {
+        age: profile.age,
+        goalType: profile.goalType
+      } : null,
+      dailyGoalsData: dailyGoal ? {
+        calories: dailyGoal.targetCalories,
+        goalType: dailyGoal.goalType
+      } : null
+    });
 
     // Get today's consumption logs
     const today = new Date().toISOString().split('T')[0];
@@ -324,21 +361,21 @@ async function fetchUserPersonalizationData(firebaseUid) {
         name: user.name,
         email: user.email
       },
-      profile: user.profile ? {
-        age: user.profile.age,
-        gender: user.profile.gender,
-        height: user.profile.height,
-        weight: user.profile.weight,
-        bmi: user.profile.bmi,
-        activityLevel: user.profile.activityLevel,
-        goalType: user.profile.goalType
+      profile: profile ? {
+        age: profile.age,
+        gender: profile.gender,
+        height: profile.height,
+        weight: profile.weight,
+        bmi: profile.bmi,
+        activityLevel: profile.activityLevel,
+        goalType: profile.goalType
       } : null,
-      dailyGoals: user.dailyGoals ? {
-        calories: user.dailyGoals.targetCalories,
-        protein: user.dailyGoals.targetProtein,
-        carbs: user.dailyGoals.targetCarbs,
-        fat: user.dailyGoals.targetFat,
-        sugar: user.dailyGoals.targetSugar || 50 // Default sugar limit if not defined
+      dailyGoals: dailyGoal ? {
+        calories: dailyGoal.targetCalories,
+        protein: dailyGoal.targetProtein,
+        carbs: dailyGoal.targetCarbs,
+        fat: dailyGoal.targetFat,
+        sugar: dailyGoal.targetSugar || 50 // Default sugar limit if not defined
       } : null,
       todayConsumption: {
         totals: todayTotals,
@@ -392,7 +429,19 @@ USER PROFILE:
 - Name: ${userData.user?.name || 'Unknown'}
 - Email: ${userData.user?.email || 'Unknown'}`;
 
-  if (userData.profile) {
+  const hasProfile = userData.profile;
+  const hasGoals = userData.dailyGoals;
+
+  if (!hasProfile && !hasGoals) {
+    context += `
+- Profile Status: INCOMPLETE - User needs to complete onboarding first
+- Daily Goals: NOT SET - Cannot provide personalized advice
+
+IMPORTANT: Tell user they need to complete their profile setup to get personalized nutrition goals and advice.`;
+    return context;
+  }
+
+  if (hasProfile) {
     context += `
 - Age: ${userData.profile.age} years old
 - Gender: ${userData.profile.gender}
@@ -400,10 +449,13 @@ USER PROFILE:
 - Weight: ${userData.profile.weight} kg
 - BMI: ${userData.profile.bmi?.toFixed(1) || 'Unknown'}
 - Activity Level: ${userData.profile.activityLevel}
-- Goal: ${userData.profile.goalType} (weight ${userData.profile.goalType})`;
+- Goal Type: ${userData.profile.goalType || 'Not specified'}`;
+  } else {
+    context += `
+- Profile Status: INCOMPLETE - Basic info missing`;
   }
 
-  if (userData.dailyGoals) {
+  if (hasGoals) {
     context += `
 
 DAILY NUTRITION GOALS:
@@ -412,6 +464,10 @@ DAILY NUTRITION GOALS:
 - Carbohydrates: ${userData.dailyGoals.carbs}g/day
 - Fat: ${userData.dailyGoals.fat}g/day
 - Sugar: ${userData.dailyGoals.sugar}g/day`;
+  } else {
+    context += `
+
+DAILY NUTRITION GOALS: NOT SET - User needs to complete profile setup`;
   }
 
   if (userData.todayConsumption) {
@@ -466,12 +522,12 @@ RECENT EATING PATTERNS (Last 7 days):`;
   context += `
 
 PERSONALIZATION INSTRUCTIONS:
-- Use this user data to provide highly personalized nutrition advice
-- Reference their specific goals and current progress
-- Consider their eating patterns and preferences
-- Suggest foods that align with their goals and activity level
-- Be encouraging about their progress
-- Provide specific, actionable advice based on their current status`;
+- ONLY use data that is actually available - don't contradict yourself
+- If profile is incomplete, tell user to complete setup first
+- If daily goals exist, reference them specifically
+- If no goals are set, don't mention specific calorie numbers
+- Be consistent - don't say "goal undefined" then mention specific calorie targets
+- Provide advice based only on the data you actually have`;
 
   return context;
 }

@@ -4,6 +4,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import BottomNavigation from './BottomNavigation';
+import Chatbot from './Chatbot';
 import { Toaster } from 'sonner';
 
 interface LayoutProps {
@@ -25,6 +26,8 @@ const Layout = ({ children }: LayoutProps) => {
     <div className={`min-h-screen bg-gray-50 ${showBottomNav ? 'pb-20' : ''}`}>
       {children}
       {showBottomNav && <BottomNavigation />}
+      {/* Show chatbot only when user is authenticated and not on auth/onboarding pages */}
+      {isReady && user && !shouldHideNav && <Chatbot />}
       <Toaster position="top-center" />
     </div>
   );

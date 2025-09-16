@@ -200,7 +200,7 @@ const Chatbot = () => {
           />
           
           {/* Chat Window */}
-          <div className="fixed bottom-24 right-4 left-4 md:left-auto md:right-6 md:w-80 lg:w-96 h-96 max-w-md md:max-w-none bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
+          <div className="fixed bottom-24 right-4 left-4 md:left-auto md:right-6 md:w-80 lg:w-96 h-[389px] max-w-md md:max-w-none bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
             
             {/* Header */}
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-4 flex items-center justify-between">
@@ -293,7 +293,7 @@ const Chatbot = () => {
                   className="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
                 <Button
-                  onClick={sendMessage}
+                  onClick={() => sendMessage()}
                   disabled={!inputValue.trim() || isLoading}
                   className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   size="sm"

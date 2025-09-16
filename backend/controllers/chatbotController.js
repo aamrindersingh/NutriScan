@@ -139,36 +139,21 @@ AI Assistant: `;
  */
 function getSystemPrompt(context) {
   const prompts = {
-    nutrition_assistant: `You are a knowledgeable nutrition assistant for NutriScan, a nutrition tracking app. Your role is to:
+    nutrition_assistant: `You are a concise nutrition assistant for NutriScan. Provide brief, actionable nutrition advice.
 
-- Provide helpful, accurate nutrition information
-- Give practical dietary advice
-- Help users understand food labels and ingredients
-- Suggest healthier alternatives when asked
-- Answer questions about calories, macronutrients, vitamins, and minerals
-- Be encouraging and supportive about healthy eating goals
+Key guidelines:
+- Keep responses under 150 words
+- Be direct and specific
+- Focus on practical tips
+- Use bullet points when helpful
+- Avoid lengthy explanations
+- Stay nutrition-focused
 
-Guidelines:
-- Keep responses conversational and friendly
-- Provide specific, actionable advice
-- If asked about medical conditions, remind users to consult healthcare professionals
-- Stay focused on nutrition and food-related topics
-- Use simple, easy-to-understand language
-- Be encouraging about healthy lifestyle choices
+Give short, helpful answers that users can quickly read and act on.`,
 
-You should respond as a helpful nutrition expert who wants to help users make better food choices.`,
+    general: `You are a concise AI assistant for NutriScan. Provide brief, helpful nutrition advice in under 150 words. Be direct and actionable.`,
 
-    general: `You are a helpful AI assistant for NutriScan, a nutrition tracking app. You can help with:
-
-- Nutrition questions and dietary advice
-- Food recommendations
-- Understanding nutrition labels
-- Healthy eating tips
-- App-related questions
-
-Keep responses helpful, friendly, and focused on health and nutrition topics.`,
-
-    food_analysis: `You are a food analysis expert. Help users understand the nutritional value of foods, interpret nutrition labels, and make informed food choices. Provide clear, practical advice about food quality and nutritional content.`
+    food_analysis: `You are a food analysis expert. Provide concise, practical advice about food nutrition in under 150 words. Be direct and specific.`
   };
 
   return prompts[context] || prompts.general;
@@ -251,9 +236,9 @@ function cleanAndFormatResponse(response) {
     return "I'm here to help with your nutrition questions! What would you like to know?";
   }
 
-  // Limit length to prevent overly long responses
-  if (cleaned.length > 1000) {
-    cleaned = cleaned.substring(0, 950) + "...";
+  // Limit length to keep responses concise
+  if (cleaned.length > 600) {
+    cleaned = cleaned.substring(0, 580) + "...";
   }
 
   return cleaned;
@@ -349,11 +334,11 @@ async function fetchUserPersonalizationData(firebaseUid) {
         goalType: user.profile.goalType
       } : null,
       dailyGoals: user.dailyGoals ? {
-        calories: user.dailyGoals.calories,
-        protein: user.dailyGoals.proteins,
-        carbs: user.dailyGoals.carbs,
-        fat: user.dailyGoals.fats,
-        sugar: user.dailyGoals.sugars
+        calories: user.dailyGoals.targetCalories,
+        protein: user.dailyGoals.targetProtein,
+        carbs: user.dailyGoals.targetCarbs,
+        fat: user.dailyGoals.targetFat,
+        sugar: user.dailyGoals.targetSugar || 50 // Default sugar limit if not defined
       } : null,
       todayConsumption: {
         totals: todayTotals,

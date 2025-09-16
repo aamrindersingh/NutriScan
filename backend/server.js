@@ -43,7 +43,7 @@ app.use(morgan('dev'));
 sequelize.authenticate()
   .then(() => {
     // Sync all models without dropping existing data
-    return sequelize.sync({ force: true }); // Use alter instead of force
+    return sequelize.sync({ force: false }); // Use alter instead of force
   })
   .then(() => {
     // Database ready

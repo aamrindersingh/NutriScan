@@ -24,7 +24,7 @@ const getRecommendations = async (prompt) => {
   const genAI = initializeGemini();
   
   if (!genAI) {
-    throw new Error('Gemini AI not initialized. Check your API key.');
+    throw new Error('Gemini AI not initialized or not working. Check your API key.');
   }
 
   try {

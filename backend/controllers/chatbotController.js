@@ -337,7 +337,11 @@ async function fetchUserPersonalizationData(firebaseUid) {
           [Op.gte]: startOfDay 
         }
       },
-      attributes: ['id', 'quantity', 'calories', 'protein', 'carbs', 'fat', 'consumedAt'], // Only needed fields
+      attributes: ['id', 'amountConsumed', 'calculatedCalories', 'calculatedProtein', 'calculatedCarbs', 'calculatedFat', 'consumedAt'],
+      include: [{
+        model: FoodItem,
+        attributes: ['name', 'barcode']
+      }],
       limit: 50, // Prevent huge result sets
       order: [['consumedAt', 'DESC']]
     });
@@ -353,7 +357,11 @@ async function fetchUserPersonalizationData(firebaseUid) {
           [Op.gte]: sevenDaysAgo
         }
       },
-      attributes: ['calories', 'protein', 'carbs', 'fat', 'consumedAt'], // Only needed fields, no includes
+      attributes: ['calculatedCalories', 'calculatedProtein', 'calculatedCarbs', 'calculatedFat', 'consumedAt', 'date'],
+      include: [{
+        model: FoodItem,
+        attributes: ['name', 'barcode']
+      }],
       order: [['consumedAt', 'DESC']],
       limit: 100 // Reasonable limit for pattern analysis
     });
@@ -372,15 +380,15 @@ async function fetchUserPersonalizationData(firebaseUid) {
         height: profile.height,
         weight: profile.weight,
         bmi: profile.bmi,
-        activityLevel: profile.activityLevel,
-        goalType: profile.goalType
+        activityLevel: profile.activityLevel
       } : null,
       dailyGoals: dailyGoal ? {
         calories: dailyGoal.targetCalories,
         protein: dailyGoal.targetProtein,
         carbs: dailyGoal.targetCarbs,
         fat: dailyGoal.targetFat,
-        sugar: dailyGoal.targetSugar || 50 // Default sugar limit if not defined
+        sugar: dailyGoal.targetSugar || 50, // Default sugar limit if not defined
+        goalType: dailyGoal.goalType
       } : null,
       todayConsumption: {
         totals: todayTotals,
@@ -509,11 +517,12 @@ RECENT EATING PATTERNS (Last 7 days):`;
     // Group by date and show summary
     const dailySummary = {};
     userData.recentPatterns.logs.forEach(log => {
-      const date = log.date;
+      const date = log.date || log.consumedAt?.split('T')[0] || 'Unknown date';
       if (!dailySummary[date]) {
         dailySummary[date] = { items: [], totalCalories: 0 };
       }
-      dailySummary[date].items.push(log.FoodItem?.name || 'Unknown');
+      const foodName = log.FoodItem?.name || 'Unknown food';
+      dailySummary[date].items.push(foodName);
       dailySummary[date].totalCalories += log.calculatedCalories || 0;
     });
 

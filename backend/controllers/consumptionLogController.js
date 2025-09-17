@@ -238,10 +238,9 @@ const consumptionLogController = {
           userId: user.id,
           date: date
         },
-        include: [{
-          model: FoodItem,
-          attributes: ['name', 'servingSize']
-        }]
+        attributes: ['id', 'quantity', 'calculatedCalories', 'calculatedCarbs', 'calculatedProtein', 'calculatedFat', 'barcode', 'consumedAt'], // Only needed fields
+        limit: 200, // Reasonable daily limit
+        order: [['consumedAt', 'DESC']]
       });
 
       // Calculate totals

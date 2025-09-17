@@ -320,37 +320,36 @@ async function fetchUserPersonalizationData(firebaseUid) {
       } : null
     });
 
-    // Get today's consumption logs
-    const today = new Date().toISOString().split('T')[0];
+    // Get today's consumption logs (optimized query)
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    
     const todayLogs = await ConsumptionLog.findAll({
       where: { 
         userId: user.id,
-        date: today
+        consumedAt: { 
+          [Op.gte]: startOfDay 
+        }
       },
-      include: [{
-        model: FoodItem,
-        attributes: ['name', 'caloriesPer100g', 'proteinsPer100g', 'carbsPer100g', 'fatsPer100g', 'sugarsPer100g']
-      }],
+      attributes: ['id', 'quantity', 'calories', 'protein', 'carbs', 'fat', 'consumedAt'], // Only needed fields
+      limit: 50, // Prevent huge result sets
       order: [['consumedAt', 'DESC']]
     });
 
-    // Get recent consumption logs (last 7 days for patterns)
+    // Get recent consumption logs (last 7 days for patterns - optimized)
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     
     const recentLogs = await ConsumptionLog.findAll({
       where: { 
         userId: user.id,
-        date: {
-          [Op.gte]: sevenDaysAgo.toISOString().split('T')[0]
+        consumedAt: {
+          [Op.gte]: sevenDaysAgo
         }
       },
-      include: [{
-        model: FoodItem,
-        attributes: ['name', 'caloriesPer100g']
-      }],
-      order: [['date', 'DESC'], ['consumedAt', 'DESC']],
-      limit: 20
+      attributes: ['calories', 'protein', 'carbs', 'fat', 'consumedAt'], // Only needed fields, no includes
+      order: [['consumedAt', 'DESC']],
+      limit: 100 // Reasonable limit for pattern analysis
     });
 
     // Calculate today's totals

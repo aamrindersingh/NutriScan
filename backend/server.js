@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
 const dotenv = require('dotenv');
 const sequelize = require('./config/database');
 const { User, Profile, DailyGoal, FoodItem, ConsumptionLog } = require('./models/relations');
@@ -21,9 +23,27 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Performance Middleware
+app.use(compression()); // Enable gzip compression
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit auth attempts
+  message: 'Too many authentication attempts, please try again later.',
+});
+
+// Basic middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS configuration
 const corsOptions = {
@@ -38,6 +58,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(helmet()); 
 app.use(morgan('dev'));
+
+// Apply rate limiting to all API routes
+app.use('/api/', limiter);
+
+// Caching middleware for different endpoint types
+const setCacheHeaders = (maxAge) => (req, res, next) => {
+  res.set('Cache-Control', `public, max-age=${maxAge}`);
+  res.set('ETag', `"${Date.now()}"`);
+  next();
+};
 
 // Test database connection and sync models
 sequelize.authenticate()
@@ -71,16 +101,16 @@ app.get('/', (req, res) => {
 });
 
 
-// Register API routes
-app.use('/api/barcode', barcodeRoutes); // Public barcode routes (no auth required)
-app.use('/api/public', publicRoutes); // Public routes first (no auth required)
-app.use('/api/gemini', geminiRoutes); // Gemini AI routes
-app.use('/api/auth', authRoutes);
+// Register API routes with appropriate caching and rate limiting
+app.use('/api/barcode', setCacheHeaders(3600), barcodeRoutes); // 1 hour cache for barcode data
+app.use('/api/public', setCacheHeaders(1800), publicRoutes); // 30 min cache for public data
+app.use('/api/gemini', geminiRoutes); // No cache for AI responses
+app.use('/api/auth', authLimiter, authRoutes); // Stricter rate limiting for auth
 app.use('/api/profile', profileRoutes);
 app.use('/api/goals', dailyGoalRoutes);
-app.use('/api/food', foodItemRoutes);
+app.use('/api/food', setCacheHeaders(3600), foodItemRoutes); // 1 hour cache for food data
 app.use('/api/logs', consumptionLogRoutes);
-app.use('/api/recommendations', recommendationRoutes);
+app.use('/api/recommendations', setCacheHeaders(600), recommendationRoutes); // 10 min cache for recommendations
 
 // Error handling middleware
 app.use((err, req, res, next) => {

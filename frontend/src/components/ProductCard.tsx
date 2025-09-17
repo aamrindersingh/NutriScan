@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { ChevronRight } from 'lucide-react';
 
 interface ProductCardProps {
@@ -21,10 +22,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, image, calories, ta
       <div className="flex items-center space-x-3">
         <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
           {image ? (
-            <img 
+            <Image 
               src={image} 
               alt={name}
+              width={48}
+              height={48}
               className="w-full h-full object-cover"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R7Dh5zTr79Y2de7gw=="
+              unoptimized={image.startsWith('data:')} // Don't optimize data URLs
             />
           ) : (
             <span className="text-2xl">🥗</span>

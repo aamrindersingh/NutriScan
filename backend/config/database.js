@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
+  logging: false, // Disable SQL query logging
   dialectOptions: {
     ssl: {
       require: true,
@@ -11,10 +12,21 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     }
   },
   pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
+    max: 20,        // Maximum connections
+    min: 5,         // Minimum connections
+    acquire: 60000, // Max time to get connection (60s)
+    idle: 10000,    // Max idle time before releasing (10s)
+    evict: 1000,    // Check for idle connections every 1s
+    handleDisconnects: true
+  },
+  retry: {
+    match: [
+      /ConnectionError/,
+      /ConnectionRefusedError/,
+      /ConnectionTimedOutError/,
+      /TimeoutError/,
+    ],
+    max: 3
   }
 });
 

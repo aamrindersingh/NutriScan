@@ -2,10 +2,20 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { useAuth } from '@/contexts/AuthContext';
 import BottomNavigation from './BottomNavigation';
-import Chatbot from './Chatbot';
 import { Toaster } from 'sonner';
+
+// Lazy load heavy components
+const Chatbot = dynamic(() => import('./Chatbot'), {
+  loading: () => (
+    <div className="fixed bottom-4 right-4 z-50">
+      <div className="animate-pulse w-14 h-14 rounded-full bg-gray-200"></div>
+    </div>
+  ),
+  ssr: false // Don't render on server
+});
 
 interface LayoutProps {
   children: React.ReactNode;

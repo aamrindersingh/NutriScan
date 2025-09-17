@@ -26,7 +26,6 @@ const authMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error('Token verification failed:', error);
     
     if (error.code === 'auth/id-token-expired') {
       return res.status(401).json({ 

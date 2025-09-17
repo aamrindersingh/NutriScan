@@ -70,34 +70,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// Health check route
-app.get('/health', async (req, res) => {
-  try {
-    await sequelize.authenticate();
-    
-    // Count records in each table
-    const counts = {
-      users: await User.count(),
-      profiles: await Profile.count(),
-      dailyGoals: await DailyGoal.count(),
-      foodItems: await FoodItem.count(),
-      consumptionLogs: await ConsumptionLog.count()
-    };
-    
-    res.json({ 
-      status: 'healthy', 
-      database: 'connected',
-      models: ['User', 'Profile', 'DailyGoal', 'FoodItem', 'ConsumptionLog'],
-      recordCounts: counts
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      status: 'unhealthy', 
-      database: 'disconnected',
-      error: error.message 
-    });
-  }
-});
 
 // Register API routes
 app.use('/api/barcode', barcodeRoutes); // Public barcode routes (no auth required)

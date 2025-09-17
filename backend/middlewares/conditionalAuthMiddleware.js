@@ -11,7 +11,6 @@ const conditionalAuthMiddleware = async (req, res, next) => {
   const isPublicRoute = publicRoutes.some(route => req.path.startsWith(route));
   
   if (isPublicRoute) {
-    console.log(`🔓 Skipping auth for public route: ${req.path}`);
     return next();
   }
   

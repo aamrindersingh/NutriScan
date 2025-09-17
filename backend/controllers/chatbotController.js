@@ -312,11 +312,17 @@ async function fetchUserPersonalizationData(firebaseUid) {
       hasDailyGoals: !!dailyGoal,
       profileData: profile ? {
         age: profile.age,
-        goalType: profile.goalType
+        gender: profile.gender,
+        height: profile.height,
+        weight: profile.weight,
+        activityLevel: profile.activityLevel
       } : null,
       dailyGoalsData: dailyGoal ? {
         calories: dailyGoal.targetCalories,
-        goalType: dailyGoal.goalType
+        goalType: dailyGoal.goalType,
+        protein: dailyGoal.targetProtein,
+        carbs: dailyGoal.targetCarbs,
+        fat: dailyGoal.targetFat
       } : null
     });
 
@@ -447,8 +453,7 @@ IMPORTANT: Tell user they need to complete their profile setup to get personaliz
 - Height: ${userData.profile.height} cm
 - Weight: ${userData.profile.weight} kg
 - BMI: ${userData.profile.bmi?.toFixed(1) || 'Unknown'}
-- Activity Level: ${userData.profile.activityLevel}
-- Goal Type: ${userData.profile.goalType || 'Not specified'}`;
+- Activity Level: ${userData.profile.activityLevel}`;
   } else {
     context += `
 - Profile Status: INCOMPLETE - Basic info missing`;
@@ -456,13 +461,13 @@ IMPORTANT: Tell user they need to complete their profile setup to get personaliz
 
   if (hasGoals) {
     context += `
+- Goal Type: ${userData.dailyGoals.goalType}
 
 DAILY NUTRITION GOALS:
 - Calories: ${userData.dailyGoals.calories} kcal/day
 - Protein: ${userData.dailyGoals.protein}g/day
 - Carbohydrates: ${userData.dailyGoals.carbs}g/day
-- Fat: ${userData.dailyGoals.fat}g/day
-- Sugar: ${userData.dailyGoals.sugar}g/day`;
+- Fat: ${userData.dailyGoals.fat}g/day`;
   } else {
     context += `
 

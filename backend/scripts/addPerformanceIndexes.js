@@ -14,7 +14,7 @@ async function addPerformanceIndexes() {
 
       // Profiles table indexes
       `CREATE INDEX IF NOT EXISTS idx_profiles_userid ON "Profiles"("userId");`,
-      `CREATE INDEX IF NOT EXISTS idx_profiles_goaltype ON "Profiles"("goalType");`,
+      `CREATE INDEX IF NOT EXISTS idx_profiles_activitylevel ON "Profiles"("activityLevel");`,
 
       // DailyGoals table indexes  
       `CREATE INDEX IF NOT EXISTS idx_dailygoals_userid ON "DailyGoals"("userId");`,
@@ -32,7 +32,7 @@ async function addPerformanceIndexes() {
       `CREATE INDEX IF NOT EXISTS idx_consumptionlogs_barcode ON "ConsumptionLogs"("barcode");`,
 
       // Composite indexes for common query patterns
-      `CREATE INDEX IF NOT EXISTS idx_profiles_userid_goaltype ON "Profiles"("userId", "goalType");`,
+      `CREATE INDEX IF NOT EXISTS idx_profiles_userid_activity ON "Profiles"("userId", "activityLevel");`,
       `CREATE INDEX IF NOT EXISTS idx_consumptionlogs_userid_date_desc ON "ConsumptionLogs"("userId", "consumedAt" DESC);`,
     ];
 

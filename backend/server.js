@@ -47,17 +47,22 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS configuration
 const corsOptions = {
-  origin: [
-    'http://localhost:3000', // Local development
-    'https://moonlit-kulfi-8c4807.netlify.app', // Production frontend
-    'http://moonlit-kulfi-8c4807.netlify.app' // In case HTTP is used
-  ],
+  origin: process.env.NODE_ENV === 'production' 
+    ? [
+        'https://moonlit-kulfi-8c4807.netlify.app', // Production frontend
+        process.env.FRONTEND_URL // Allow custom frontend URL
+      ].filter(Boolean)
+    : [
+        'http://localhost:3000', // Local development
+        'https://moonlit-kulfi-8c4807.netlify.app', // Production frontend
+        'http://moonlit-kulfi-8c4807.netlify.app' // In case HTTP is used
+      ],
   credentials: true,
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 app.use(helmet()); 
-app.use(morgan('dev'));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // Apply rate limiting to all API routes
 app.use('/api/', limiter);
@@ -73,7 +78,7 @@ const setCacheHeaders = (maxAge) => (req, res, next) => {
 sequelize.authenticate()
   .then(() => {
     // Sync all models without dropping existing data
-    return sequelize.sync({ force: true }); // Use alter instead of force
+    return sequelize.sync({ force: false }); // Use alter instead of force
   })
   .then(() => {
     // Database ready
@@ -120,6 +125,29 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🔄 SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    console.log('✅ HTTP server closed');
+    sequelize.close().then(() => {
+      console.log('✅ Database connection closed');
+      process.exit(0);
+    });
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('🔄 SIGINT signal received: closing HTTP server');
+  server.close(() => {
+    console.log('✅ HTTP server closed');
+    sequelize.close().then(() => {
+      console.log('✅ Database connection closed');
+      process.exit(0);
+    });
+  });
 }); 

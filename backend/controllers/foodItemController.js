@@ -33,7 +33,6 @@ const foodItemController = {
       // If not found in database OR has incomplete data, and autoFetch is enabled, try OpenFoodFacts
       if (autoFetch && (!foodItem || isIncompleteData)) {
         try {
-          console.log(`Fetching data for barcode ${barcode} from OpenFoodFacts...`);
           const openFoodFactsData = await openFoodFactsService.getProductByBarcode(barcode);
           
           if (openFoodFactsData) {

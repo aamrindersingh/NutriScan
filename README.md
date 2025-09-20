@@ -1,172 +1,193 @@
-# NutriScan
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScan - Neon PWA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      line-height: 1.6;
+    }
+    a { color: #0ff; text-decoration: none; }
+    a:hover { text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
 
-NutriScan is a modern Progressive Web App (PWA) designed to help users instantly access nutritional information by scanning food barcodes. Powered by advanced AI, NutriScan delivers personalized recommendations and actionable insights to promote healthy eating habits. The app offers a seamless cross-platform experience with robust PWA features, ensuring accessibility on mobile, tablet, and desktop devices.
+    /* Neon Headings */
+    h1, h2, h3 {
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+      margin-bottom: 1rem;
+    }
 
----
+    h1 { font-size: 3rem; text-align: center; margin-top: 2rem; }
+    h2 { font-size: 2rem; margin-top: 2rem; border-bottom: 1px solid #0ff; padding-bottom: 0.5rem; }
+    h3 { font-size: 1.5rem; margin-top: 1.5rem; }
 
-## 🚀 Project Purpose
+    /* Container */
+    .container { width: 90%; max-width: 1000px; margin: auto; padding: 2rem 0; }
 
-NutriScan aims to empower users to make informed dietary choices with instant, AI-driven nutrition analysis. By combining barcode scanning, real-time AI feedback, and smart health suggestions, NutriScan helps users take charge of their nutrition, whether shopping, meal planning, or tracking their daily intake.
+    /* Section Styling */
+    section { margin-bottom: 3rem; }
 
----
+    /* Feature List */
+    ul { list-style: none; padding-left: 1rem; }
+    li {
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-left: 4px solid #0ff;
+      transition: all 0.3s ease;
+    }
+    li:hover { background: rgba(0,255,255,0.05); box-shadow: 0 0 10px #0ff; }
 
-## ✨ Features
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    th, td {
+      border: 1px solid #0ff;
+      padding: 0.5rem 1rem;
+      text-align: left;
+    }
+    th {
+      background: #0a0a0a;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+    tr:hover td {
+      background: rgba(0,255,255,0.05);
+      box-shadow: 0 0 10px #0ff inset;
+    }
 
-- **Barcode Scanner**: Quickly scan food packaging to retrieve detailed nutritional facts.
-- **Nutrition Info Lookup**: Access comprehensive nutrition labels, ingredients, and allergen information.
-- **AI Recommendations**: Get tailored suggestions based on scanned foods, dietary preferences, and health goals using Gemini AI.
-- **PWA Support**: Installable experience with offline access, home screen shortcut, and push notifications.
-- **Smart Feedback**: Receive real-time feedback, warnings on unhealthy items, and alternative food suggestions.
-- **Cross-Platform**: Optimized for mobile and desktop, works flawlessly online and offline.
+    /* Code blocks */
+    pre {
+      background: #111;
+      color: #0ff;
+      padding: 1rem;
+      border-left: 4px solid #0ff;
+      overflow-x: auto;
+      text-shadow: 0 0 2px #0ff;
+      margin-bottom: 1rem;
+    }
 
----
+    code { color: #0ff; font-family: 'Courier New', monospace; }
 
-## 🛠️ Tech Stack
+    /* Buttons / Links */
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      color: #0ff;
+      border: 1px solid #0ff;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-align: center;
+      margin: 0.5rem 0;
+      transition: 0.3s ease;
+    }
+    .btn:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
+    }
 
-| Layer      | Technology                                 |
-|------------|--------------------------------------------|
-| Frontend   | Next.js 15, TypeScript, Tailwind CSS, next-pwa |
-| Backend    | Node.js, Express, Gemini AI API            |
-| Deployment | Vercel (Frontend), Render (Backend)        |
-| PWA        | next-pwa (Service Worker), Web App Manifest, Custom Icons |
+    /* Blockquote */
+    blockquote {
+      border-left: 4px solid #0ff;
+      padding-left: 1rem;
+      color: #0ff;
+      margin: 1rem 0;
+      font-style: italic;
+      text-shadow: 0 0 5px #0ff;
+    }
+  </style>
+</head>
+<body>
 
----
+<div class="container">
+  <h1>🌐 NutriScan</h1>
+  <p style="text-align:center; font-size:1.2rem;">Your AI-powered neon nutrition companion</p>
 
----
+  <!-- Project Purpose -->
+  <section>
+    <h2>🚀 Project Purpose</h2>
+    <p>
+      NutriScan empowers users to make <strong>informed dietary choices</strong> with instant, AI-driven nutrition analysis.  
+      By combining barcode scanning, <strong>RAG-powered AI chat</strong>, and real-time smart feedback, NutriScan ensures that 
+      <strong>healthy eating is intuitive, interactive, and futuristic</strong>, whether shopping, meal planning, or tracking daily intake.
+    </p>
+  </section>
 
-## 🧑‍💻 Local Development Setup
+  <!-- Features -->
+  <section>
+    <h2>✨ Features</h2>
+    <ul>
+      <li>📦 <strong>Barcode Scanner:</strong> Quickly scan food packaging to retrieve detailed nutritional facts.</li>
+      <li>📄 <strong>Nutrition Info Lookup:</strong> Access nutrition labels, ingredients, and allergen info.</li>
+      <li>🤖 <strong>AI Recommendations:</strong> Tailored suggestions using Gemini AI.</li>
+      <li>💬 <strong>RAG-powered Chatbot:</strong> Instant, context-aware nutrition advice.</li>
+      <li>🌐 <strong>PWA Support:</strong> Offline access, home screen shortcut, push notifications.</li>
+      <li>⚡ <strong>Smart Feedback:</strong> Real-time warnings and healthier alternatives.</li>
+      <li>📱 <strong>Cross-Platform:</strong> Works perfectly online and offline.</li>
+    </ul>
+  </section>
 
-### Prerequisites
+  <!-- Tech Stack -->
+  <section>
+    <h2>🛠️ Tech Stack</h2>
+    <table>
+      <tr><th>Layer</th><th>Technology</th></tr>
+      <tr><td>Frontend</td><td>Next.js 15, TypeScript, Tailwind CSS, next-pwa</td></tr>
+      <tr><td>Backend</td><td>Node.js, Express, Gemini AI API</td></tr>
+      <tr><td>Deployment</td><td>Vercel (Frontend), Render (Backend)</td></tr>
+      <tr><td>PWA</td><td>next-pwa, Web App Manifest, Custom Neon Icons</td></tr>
+    </table>
+  </section>
 
-- **Node.js** (v18+ recommended)
-- **npm** or **yarn**
-- **Vercel CLI** (optional, for frontend deployment)
-- **Render account** (for backend deployment)
-- Gemini AI API key (see [Gemini AI Integration](#-gemini-ai-integration))
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/nutriscan.git
-cd nutriscan
-```
-
-### 2. Frontend Setup
-
-```bash
-cd frontend
-cp .env.example .env.local   # Fill in required env vars
-npm install
-npm run dev                  # Starts Next.js locally
-```
-
-#### **Frontend Environment Variables**
-
-| Variable              | Description                          |
-|-----------------------|--------------------------------------|
-| NEXT_PUBLIC_API_URL   | URL of the backend (Express) API     |
-| NEXT_PUBLIC_APP_NAME  | App display name                     |
-
-### 3. Backend Setup
-
-```bash
-cd ../backend
-cp .env.example .env        # Fill in required env vars
-npm install
-npm run dev                 # Starts Express server with nodemon
-```
-
-#### **Backend Environment Variables**
-
-| Variable          | Description                        |
-|-------------------|------------------------------------|
-| PORT              | Port on which Express runs         |
-| GEMINI_API_KEY    | API key for Gemini AI              |
-
----
-
-## 🚢 Deployment
-
-### Frontend (Vercel)
-
-1. Push the `frontend/` directory to a GitHub repository.
-2. Import the project in [Vercel](https://vercel.com/new).
-3. Set environment variables (`NEXT_PUBLIC_API_URL`, etc.) in Vercel dashboard.
-4. Deploy!
-
-### Backend (Render)
-
-1. Push the `backend/` directory to a GitHub repository.
-2. Create a new Web Service on [Render](https://dashboard.render.com/).
-3. Set environment variables (`PORT`, `GEMINI_API_KEY`) in Render dashboard.
-4. Deploy!
-
----
-
-## 🤖 Gemini AI Integration
-
-Gemini AI powers NutriScan's personalized nutrition recommendations. After barcode scanning, the backend calls the Gemini API with relevant food data and user context for real-time feedback.
-
-**Example API Call (Node.js/Express):**
-
-```typescript
-import axios from 'axios';
+  <!-- Code Example -->
+  <section>
+    <h2>🤖 Gemini AI Example</h2>
+    <pre><code>import axios from 'axios';
 
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-async function getAIRecommendation(nutritionData: object, userPreferences: object) {
-  const prompt = `Given the following nutrition data and user preferences, provide a recommendation: ...`;
-
-  const response = await axios.post(
-    `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
-    {
-      contents: [{ role: "user", parts: [{ text: prompt }] }]
-    }
-  );
+async function getAIRecommendation(nutritionData, userPreferences) {
+  const prompt = `Given the nutrition data and user preferences, provide a recommendation.`;
+  const response = await axios.post(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+    contents: [{ role: "user", parts: [{ text: prompt }] }]
+  });
   return response.data;
-}
-```
+}</code></pre>
+  </section>
 
----
+  <!-- AI Prompt Example -->
+  <section>
+    <h2>💡 AI Prompt Example</h2>
+    <blockquote>
+      "Given the following nutrition label and user preferences, provide a concise health recommendation and suggest healthier alternatives if necessary. Nutrition: [nutrition_data]. Preferences: [user_preferences]."
+    </blockquote>
+  </section>
 
-## 🏗 PWA Setup Summary
+  <!-- Acknowledgements -->
+  <section>
+    <h2>🙏 Acknowledgements</h2>
+    <ul>
+      <li><a href="https://nextjs.org/">Next.js</a></li>
+      <li><a href="https://tailwindcss.com/">Tailwind CSS</a></li>
+      <li><a href="https://github.com/shadowwalker/next-pwa">next-pwa</a></li>
+      <li><a href="https://ai.google.dev/gemini-api/docs">Gemini AI</a></li>
+      <li><a href="https://render.com/">Render</a></li>
+      <li><a href="https://vercel.com/">Vercel</a></li>
+    </ul>
+  </section>
+</div>
 
-- **Manifest**: `frontend/public/manifest.json` contains app metadata, theme color, icons, and start URL.
-- **Service Worker**: Integrated with `next-pwa` for offline support, caching, and background sync.
-- **Icons**: Located in `frontend/public/icons/`, covering multiple device and browser requirements.
-
----
-
-## 💡 AI Prompt Example
-
-> `"Given the following nutrition label and user preferences, provide a concise health recommendation and suggest healthier alternatives if necessary. Nutrition: [nutrition_data]. Preferences: [user_preferences]."`
-
----
-
-## 🚦 Optional Future Enhancements
-
-- **OCR Support**: Scan nutrition labels using Optical Character Recognition.
-- **Weekly Reports**: Summarize user intake and progress.
-- **Health Tracking**: Integrate with wearable devices and health apps.
-- **Voice Assistant**: Voice-driven scanning and feedback.
-- **Recipe Suggestions**: Suggest recipes based on scanned foods.
-
----
-
-## 🙏 Acknowledgements
-
-- [Next.js](https://nextjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [next-pwa](https://github.com/shadowwalker/next-pwa)
-- [Gemini AI](https://ai.google.dev/gemini-api/docs)
-- [Render](https://render.com/)
-- [Vercel](https://vercel.com/)
-
----
-
-## 📝 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
+</body>
+</html>

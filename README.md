@@ -1,193 +1,238 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NutriScan - Neon PWA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* Global Styles */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #0a0a0a;
-      color: #fff;
-      line-height: 1.6;
-    }
-    a { color: #0ff; text-decoration: none; }
-    a:hover { text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
+# NutriScan - Intelligent Nutrition Management Platform
 
-    /* Neon Headings */
-    h1, h2, h3 {
-      color: #0ff;
-      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
-      margin-bottom: 1rem;
-    }
+<div align="center">
+  
+  **Enterprise-Grade Nutrition Tracking • RAG-Based AI Assistant • Real-time Analytics**
+  
+  ![Neon](https://img.shields.io/badge/Database-Neon-00E699?style=for-the-badge&logo=postgresql&logoColor=white)
+  ![Next.js](https://img.shields.io/badge/Frontend-Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+  ![Node.js](https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+  ![Firebase](https://img.shields.io/badge/Auth-Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+  ![Gemini](https://img.shields.io/badge/AI-Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
-    h1 { font-size: 3rem; text-align: center; margin-top: 2rem; }
-    h2 { font-size: 2rem; margin-top: 2rem; border-bottom: 1px solid #0ff; padding-bottom: 0.5rem; }
-    h3 { font-size: 1.5rem; margin-top: 1.5rem; }
-
-    /* Container */
-    .container { width: 90%; max-width: 1000px; margin: auto; padding: 2rem 0; }
-
-    /* Section Styling */
-    section { margin-bottom: 3rem; }
-
-    /* Feature List */
-    ul { list-style: none; padding-left: 1rem; }
-    li {
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-      border-left: 4px solid #0ff;
-      transition: all 0.3s ease;
-    }
-    li:hover { background: rgba(0,255,255,0.05); box-shadow: 0 0 10px #0ff; }
-
-    /* Tables */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
-    th, td {
-      border: 1px solid #0ff;
-      padding: 0.5rem 1rem;
-      text-align: left;
-    }
-    th {
-      background: #0a0a0a;
-      color: #0ff;
-      text-shadow: 0 0 5px #0ff;
-    }
-    tr:hover td {
-      background: rgba(0,255,255,0.05);
-      box-shadow: 0 0 10px #0ff inset;
-    }
-
-    /* Code blocks */
-    pre {
-      background: #111;
-      color: #0ff;
-      padding: 1rem;
-      border-left: 4px solid #0ff;
-      overflow-x: auto;
-      text-shadow: 0 0 2px #0ff;
-      margin-bottom: 1rem;
-    }
-
-    code { color: #0ff; font-family: 'Courier New', monospace; }
-
-    /* Buttons / Links */
-    .btn {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      color: #0ff;
-      border: 1px solid #0ff;
-      text-transform: uppercase;
-      font-weight: bold;
-      text-align: center;
-      margin: 0.5rem 0;
-      transition: 0.3s ease;
-    }
-    .btn:hover {
-      background: #0ff;
-      color: #000;
-      box-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
-    }
-
-    /* Blockquote */
-    blockquote {
-      border-left: 4px solid #0ff;
-      padding-left: 1rem;
-      color: #0ff;
-      margin: 1rem 0;
-      font-style: italic;
-      text-shadow: 0 0 5px #0ff;
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-  <h1>🌐 NutriScan</h1>
-  <p style="text-align:center; font-size:1.2rem;">Your AI-powered neon nutrition companion</p>
-
-  <!-- Project Purpose -->
-  <section>
-    <h2>🚀 Project Purpose</h2>
-    <p>
-      NutriScan empowers users to make <strong>informed dietary choices</strong> with instant, AI-driven nutrition analysis.  
-      By combining barcode scanning, <strong>RAG-powered AI chat</strong>, and real-time smart feedback, NutriScan ensures that 
-      <strong>healthy eating is intuitive, interactive, and futuristic</strong>, whether shopping, meal planning, or tracking daily intake.
-    </p>
-  </section>
-
-  <!-- Features -->
-  <section>
-    <h2>✨ Features</h2>
-    <ul>
-      <li>📦 <strong>Barcode Scanner:</strong> Quickly scan food packaging to retrieve detailed nutritional facts.</li>
-      <li>📄 <strong>Nutrition Info Lookup:</strong> Access nutrition labels, ingredients, and allergen info.</li>
-      <li>🤖 <strong>AI Recommendations:</strong> Tailored suggestions using Gemini AI.</li>
-      <li>💬 <strong>RAG-powered Chatbot:</strong> Instant, context-aware nutrition advice.</li>
-      <li>🌐 <strong>PWA Support:</strong> Offline access, home screen shortcut, push notifications.</li>
-      <li>⚡ <strong>Smart Feedback:</strong> Real-time warnings and healthier alternatives.</li>
-      <li>📱 <strong>Cross-Platform:</strong> Works perfectly online and offline.</li>
-    </ul>
-  </section>
-
-  <!-- Tech Stack -->
-  <section>
-    <h2>🛠️ Tech Stack</h2>
-    <table>
-      <tr><th>Layer</th><th>Technology</th></tr>
-      <tr><td>Frontend</td><td>Next.js 15, TypeScript, Tailwind CSS, next-pwa</td></tr>
-      <tr><td>Backend</td><td>Node.js, Express, Gemini AI API</td></tr>
-      <tr><td>Deployment</td><td>Vercel (Frontend), Render (Backend)</td></tr>
-      <tr><td>PWA</td><td>next-pwa, Web App Manifest, Custom Neon Icons</td></tr>
-    </table>
-  </section>
-
-  <!-- Code Example -->
-  <section>
-    <h2>🤖 Gemini AI Example</h2>
-    <pre><code>import axios from 'axios';
-
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-async function getAIRecommendation(nutritionData, userPreferences) {
-  const prompt = `Given the nutrition data and user preferences, provide a recommendation.`;
-  const response = await axios.post(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-    contents: [{ role: "user", parts: [{ text: prompt }] }]
-  });
-  return response.data;
-}</code></pre>
-  </section>
-
-  <!-- AI Prompt Example -->
-  <section>
-    <h2>💡 AI Prompt Example</h2>
-    <blockquote>
-      "Given the following nutrition label and user preferences, provide a concise health recommendation and suggest healthier alternatives if necessary. Nutrition: [nutrition_data]. Preferences: [user_preferences]."
-    </blockquote>
-  </section>
-
-  <!-- Acknowledgements -->
-  <section>
-    <h2>🙏 Acknowledgements</h2>
-    <ul>
-      <li><a href="https://nextjs.org/">Next.js</a></li>
-      <li><a href="https://tailwindcss.com/">Tailwind CSS</a></li>
-      <li><a href="https://github.com/shadowwalker/next-pwa">next-pwa</a></li>
-      <li><a href="https://ai.google.dev/gemini-api/docs">Gemini AI</a></li>
-      <li><a href="https://render.com/">Render</a></li>
-      <li><a href="https://vercel.com/">Vercel</a></li>
-    </ul>
-  </section>
 </div>
 
-</body>
-</html>
+---
+
+## Overview
+
+NutriScan is a comprehensive nutrition management platform that leverages cutting-edge AI technology to provide personalized dietary insights and recommendations. Built with modern web technologies and powered by Neon's serverless PostgreSQL database, the platform offers scalable, real-time nutrition tracking capabilities for health-conscious individuals and organizations.
+
+## Key Features
+
+### 🔍 **Intelligent Food Recognition**
+- **Barcode Scanning**: Advanced barcode detection using ZXing library
+- **Product Database Integration**: Real-time data from OpenFoodFacts API
+- **Nutritional Analysis**: Comprehensive macro and micronutrient breakdown
+
+### 🤖 **RAG-Based AI Chatbot**
+- **Conversational Interface**: Natural language conversations about nutrition and health goals
+- **Retrieval-Augmented Generation**: Personalized responses based on user history, consumption logs, and preferences
+- **Context-Aware Responses**: AI maintains conversation context and provides relevant nutritional guidance
+- **Personal Health Insights**: AI analyzes user data to provide tailored dietary advice and goal tracking support
+
+### � **Intelligent Product Analysis**
+- **AI-Powered Health Scoring**: Comprehensive health assessment of food products (1-100 scale)
+- **Nutritional Insights**: Detailed analysis of positive aspects and health concerns for each product
+- **Alternative Suggestions**: AI-recommended healthier alternatives with availability information
+- **Personalized Recommendations**: Product-specific consumption advice based on user preferences and health goals
+
+### � **Nutrition Tracking & Goals**
+- **Daily Goal Management**: Customizable targets for calories, macros, and micronutrients
+- **Consumption Logging**: Historical tracking of food intake with detailed nutritional breakdown
+- **Progress Monitoring**: Real-time updates on daily nutritional goals and achievements
+- **User Profiles**: Personalized settings and dietary preferences management
+
+## Architecture & Technology Stack
+
+### Frontend Architecture
+- **Framework**: Next.js 14 with App Router for optimal performance and SEO
+- **Language**: TypeScript for type safety and enhanced developer experience
+- **Styling**: Tailwind CSS with custom component library using Radix UI primitives
+- **State Management**: React Context API with optimized re-rendering patterns
+- **PWA Features**: Next-PWA integration for offline functionality and app-like experience
+- **Performance**: Code splitting, dynamic imports, and image optimization
+
+### Backend Infrastructure
+- **Runtime**: Node.js with Express.js framework for scalable API development
+- **Database ORM**: Sequelize with advanced query optimization and relationship management
+- **Authentication**: Firebase Admin SDK for secure token validation and user management
+- **Rate Limiting**: Express-based throttling for API protection and performance
+- **Middleware Stack**: Helmet for security, Morgan for logging, Compression for optimization
+
+### Database & Storage Solutions
+- **Primary Database**: Neon PostgreSQL - Serverless, auto-scaling, and branch-based development
+- **Authentication Store**: Firebase Auth for user credentials and session management
+- **Performance Optimization**: Database indexing and query optimization scripts
+- **Data Integrity**: Sequelize migrations and model relationships for consistent data structure
+
+### AI & Machine Learning Integration
+- **Language Model**: Google Gemini Pro for natural language processing and generation
+- **RAG Implementation**: Custom retrieval system combining user data with nutritional knowledge base
+- **External APIs**: OpenFoodFacts integration for comprehensive product information
+- **Data Processing**: Advanced nutrition calculation algorithms and recommendation engines
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+ and npm/yarn package manager
+- Neon PostgreSQL database instance
+- Firebase project with Authentication enabled
+- Google Gemini AI API access
+
+### Installation & Setup
+
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/aamrindersingh/NutriScan-backend.git
+cd NutriScan-backend
+```
+
+#### 2. Backend Configuration
+```bash
+cd backend
+npm install
+
+# Configure environment variables
+cp .env.example .env
+# Edit .env with your configuration values
+
+# Initialize database
+npm run init-db
+
+# Start development server
+npm run dev
+```
+
+#### 3. Frontend Configuration
+```bash
+cd frontend
+npm install
+
+# Configure environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your configuration values
+
+# Start development server
+npm run dev
+```
+
+### Environment Configuration
+
+#### Backend Environment Variables (.env)
+```env
+# Database Configuration
+DATABASE_URL=postgresql://user:password@your-neon-db.neon.tech/nutriscan
+
+# Firebase Configuration
+FIREBASE_SERVICE_ACCOUNT_KEY=path/to/your/firebase-service-account.json
+
+# AI Configuration
+GEMINI_API_KEY=your_google_gemini_api_key
+
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+
+# Security
+JWT_SECRET=your_jwt_secret_key
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+```
+
+#### Frontend Environment Variables (.env.local)
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3001
+
+# Firebase Configuration
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+
+# PWA Configuration
+NEXT_PUBLIC_APP_NAME=NutriScan
+NEXT_PUBLIC_APP_DESCRIPTION=Intelligent Nutrition Management Platform
+```
+
+## Database Schema & Migrations
+
+The application uses Sequelize ORM with the following core entities:
+- **Users**: Authentication and basic user information
+- **Profiles**: Extended user profiles with preferences and settings
+- **DailyGoals**: Customizable nutritional targets and objectives
+- **FoodItems**: Comprehensive food database with nutritional information
+- **ConsumptionLogs**: Historical tracking of user food consumption
+
+### Running Migrations
+```bash
+cd backend
+npm run migrate
+npm run seed # Optional: populate with sample data
+```
+
+## Development Workflow
+
+### Code Structure
+```
+backend/
+├── config/          # Database and service configurations
+├── controllers/     # Business logic and request handlers
+├── middlewares/     # Authentication and validation middleware
+├── models/          # Sequelize database models
+├── routes/          # API route definitions
+├── services/        # External service integrations
+└── utils/           # Helper functions and utilities
+
+frontend/
+├── src/app/         # Next.js app router pages
+├── src/components/  # Reusable React components
+├── src/contexts/    # React context providers
+├── src/hooks/       # Custom React hooks
+├── src/lib/         # Utility libraries and configurations
+└── src/types/       # TypeScript type definitions
+```
+
+### Development Scripts
+```bash
+# Backend
+npm run dev          # Start development server with hot reload
+npm run build        # Build for production
+npm run start        # Start production server
+npm run migrate      # Run database migrations
+npm run test         # Run test suite
+
+# Frontend
+npm run dev          # Start development server
+npm run build        # Build optimized production bundle
+npm run start        # Start production server
+npm run lint         # Run ESLint code quality checks
+npm run type-check   # Run TypeScript type checking
+```
+
+## Performance & Scalability
+
+### Database Optimization
+- **Neon Database Features**: Serverless PostgreSQL with automatic scaling and branching
+- **Connection Pooling**: Optimized database connections for high-concurrency scenarios
+- **Query Optimization**: Indexed searches and optimized JOIN operations
+- **Data Archiving**: Automated cleanup and archival of historical consumption data
+
+### Frontend Performance
+- **Bundle Optimization**: Code splitting and tree shaking for minimal bundle sizes
+- **Image Optimization**: Next.js automatic image optimization and lazy loading
+- **Caching Strategy**: Intelligent caching of API responses and static assets
+- **Progressive Loading**: Skeleton screens and progressive enhancement
+
+---
+
+<div align="center">
+  
+**Powered by Neon Database**
+
+*Serverless PostgreSQL • Auto-scaling • Developer-first*
+
+**Built for the Modern Web**
+
+</div>
